@@ -165,13 +165,13 @@ async function generateReport(submission: SubmissionData): Promise<ReportData> {
 
     // Call OpenAI API
     const response = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4-turbo',
       messages: [
         { role: 'system', content: 'You are a business analyst AI that provides insights on business problems. Format your response as JSON.' },
         { role: 'user', content: prompt }
       ],
       response_format: { type: 'json_object' },
-      max_tokens: 1500,
+      max_tokens: 2000,
       temperature: 0.7,
     });
 
@@ -181,7 +181,31 @@ async function generateReport(submission: SubmissionData): Promise<ReportData> {
     try {
       // Try to parse the JSON response
       const parsedResponse = JSON.parse(responseText);
-      return parsedResponse;
+      
+      // Ensure the response has the expected structure
+      const validatedResponse: ReportData = {
+        industry_comparison: {
+          prevalence: parsedResponse.industry_comparison?.prevalence || 'Unable to determine',
+          context: parsedResponse.industry_comparison?.context || 'No context available',
+        },
+        solution_landscape: {
+          common_approaches: Array.isArray(parsedResponse.solution_landscape?.common_approaches) 
+            ? parsedResponse.solution_landscape.common_approaches 
+            : ['No approaches identified'],
+          satisfaction_levels: parsedResponse.solution_landscape?.satisfaction_levels || 'Unable to determine',
+          budget_insights: parsedResponse.solution_landscape?.budget_insights || 'No budget insights available',
+        },
+        business_impact: {
+          estimated_impact: parsedResponse.business_impact?.estimated_impact || 'Unable to estimate',
+          competitive_advantage: parsedResponse.business_impact?.competitive_advantage || 'Unable to determine',
+          priority_recommendation: parsedResponse.business_impact?.priority_recommendation || 'No recommendation available',
+        },
+        recommendations: Array.isArray(parsedResponse.recommendations) 
+          ? parsedResponse.recommendations 
+          : ['No specific recommendations available'],
+      };
+      
+      return validatedResponse;
     } catch (parseError) {
       console.error('Error parsing OpenAI response:', parseError);
       

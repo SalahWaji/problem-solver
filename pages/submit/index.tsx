@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import Layout from '../../components/layout/Layout';
 import { useRouter } from 'next/router';
-import { FormData, formSteps } from '../../types/form';
+import { FormData, formSteps, operationalAreasByIndustry, OperationalAreaOption } from '../../types/form';
 
 const SubmitPage: NextPage = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Partial<FormData>>({});
+  const [formData, setFormData] = useState<Partial<FormData>>({
+    yearsInBusiness: 0
+  });
+  const [operationalAreaOptions, setOperationalAreaOptions] = useState<OperationalAreaOption[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // State for "Other" text fields
@@ -62,7 +65,40 @@ const SubmitPage: NextPage = () => {
       ...formData,
       [field]: value,
     });
+    
+    // When industry changes, update operational area options
+    if (field === 'industry') {
+      // Reset operational area when industry changes
+      setFormData(prev => ({
+        ...prev,
+        operationalArea: ''
+      }));
+      
+      // Get the industry value without the "other:" prefix if it exists
+      const industryValue = value.startsWith('other:') ? 'other' : value;
+      
+      // Set operational area options based on selected industry
+      if (industryValue && operationalAreasByIndustry[industryValue]) {
+        setOperationalAreaOptions(operationalAreasByIndustry[industryValue]);
+      } else {
+        // Fallback to default options if industry not found
+        setOperationalAreaOptions(operationalAreasByIndustry.other);
+      }
+    }
   };
+  
+  // Initialize operational area options based on industry
+  useEffect(() => {
+    if (formData.industry) {
+      const industryValue = formData.industry.startsWith('other:') ? 'other' : formData.industry;
+      if (operationalAreasByIndustry[industryValue]) {
+        setOperationalAreaOptions(operationalAreasByIndustry[industryValue]);
+      }
+    } else {
+      // Default to "other" category options if no industry selected
+      setOperationalAreaOptions(operationalAreasByIndustry.other);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +174,9 @@ const SubmitPage: NextPage = () => {
                 <option value="construction">Construction & Real Estate</option>
                 <option value="professional">Professional Services</option>
                 <option value="nonprofit">Nonprofit & NGO</option>
+                <option value="automotive">Automotive & Car Dealerships</option>
+                <option value="dental">Dental Practices</option>
+                <option value="vocational">Vocational Schools</option>
                 <option value="other">Other</option>
               </select>
               
@@ -218,16 +257,11 @@ const SubmitPage: NextPage = () => {
                 required
               >
                 <option value="">Select operational area</option>
-                <option value="finance">Finance & Accounting</option>
-                <option value="marketing">Marketing & Sales</option>
-                <option value="operations">Operations & Logistics</option>
-                <option value="hr">Human Resources</option>
-                <option value="customer">Customer Service</option>
-                <option value="product">Product Development</option>
-                <option value="it">IT & Technology</option>
-                <option value="legal">Legal & Compliance</option>
-                <option value="strategy">Strategy & Planning</option>
-                <option value="other">Other</option>
+                {operationalAreaOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
               
               {formData.operationalArea === 'other' && (

@@ -70,6 +70,9 @@ export const industryOptions = [
   { value: 'construction', label: 'Construction & Real Estate' },
   { value: 'professional', label: 'Professional Services' },
   { value: 'nonprofit', label: 'Nonprofit & NGO' },
+  { value: 'automotive', label: 'Automotive & Car Dealerships' },
+  { value: 'dental', label: 'Dental Practices' },
+  { value: 'vocational', label: 'Vocational Schools' },
   { value: 'other', label: 'Other' },
 ];
 
@@ -81,6 +84,145 @@ export const companySizeOptions = [
   { value: '201+', label: '201+ employees' },
 ];
 
+// Define subcategories for each industry
+export interface OperationalAreaOption {
+  value: string;
+  label: string;
+}
+
+export const operationalAreasByIndustry: Record<string, OperationalAreaOption[]> = {
+  technology: [
+    { value: 'software_dev', label: 'Software Development' },
+    { value: 'it_infrastructure', label: 'IT Infrastructure' },
+    { value: 'data_analytics', label: 'Data Analytics' },
+    { value: 'cybersecurity', label: 'Cybersecurity' },
+    { value: 'product_management', label: 'Product Management' },
+    { value: 'tech_support', label: 'Technical Support' },
+    { value: 'other', label: 'Other' },
+  ],
+  retail: [
+    { value: 'inventory', label: 'Inventory Management' },
+    { value: 'ecommerce', label: 'E-commerce Operations' },
+    { value: 'store_operations', label: 'Store Operations' },
+    { value: 'supply_chain', label: 'Supply Chain' },
+    { value: 'customer_experience', label: 'Customer Experience' },
+    { value: 'merchandising', label: 'Merchandising' },
+    { value: 'other', label: 'Other' },
+  ],
+  manufacturing: [
+    { value: 'production', label: 'Production & Assembly' },
+    { value: 'quality_control', label: 'Quality Control' },
+    { value: 'supply_chain', label: 'Supply Chain' },
+    { value: 'maintenance', label: 'Equipment Maintenance' },
+    { value: 'inventory', label: 'Inventory Management' },
+    { value: 'safety', label: 'Safety & Compliance' },
+    { value: 'other', label: 'Other' },
+  ],
+  healthcare: [
+    { value: 'patient_care', label: 'Patient Care' },
+    { value: 'medical_records', label: 'Medical Records' },
+    { value: 'billing', label: 'Billing & Insurance' },
+    { value: 'scheduling', label: 'Scheduling & Appointments' },
+    { value: 'compliance', label: 'Compliance & Regulations' },
+    { value: 'pharmacy', label: 'Pharmacy Operations' },
+    { value: 'other', label: 'Other' },
+  ],
+  finance: [
+    { value: 'accounting', label: 'Accounting' },
+    { value: 'financial_planning', label: 'Financial Planning' },
+    { value: 'investment', label: 'Investment Management' },
+    { value: 'lending', label: 'Lending & Credit' },
+    { value: 'compliance', label: 'Compliance & Risk' },
+    { value: 'customer_service', label: 'Customer Service' },
+    { value: 'other', label: 'Other' },
+  ],
+  education: [
+    { value: 'curriculum', label: 'Curriculum Development' },
+    { value: 'student_services', label: 'Student Services' },
+    { value: 'administration', label: 'Administration' },
+    { value: 'enrollment', label: 'Enrollment & Admissions' },
+    { value: 'technology', label: 'Educational Technology' },
+    { value: 'assessment', label: 'Assessment & Grading' },
+    { value: 'other', label: 'Other' },
+  ],
+  hospitality: [
+    { value: 'reservations', label: 'Reservations & Booking' },
+    { value: 'guest_services', label: 'Guest Services' },
+    { value: 'food_beverage', label: 'Food & Beverage' },
+    { value: 'housekeeping', label: 'Housekeeping & Maintenance' },
+    { value: 'events', label: 'Events & Conferences' },
+    { value: 'revenue_management', label: 'Revenue Management' },
+    { value: 'other', label: 'Other' },
+  ],
+  construction: [
+    { value: 'project_management', label: 'Project Management' },
+    { value: 'estimating', label: 'Estimating & Bidding' },
+    { value: 'site_operations', label: 'Site Operations' },
+    { value: 'safety', label: 'Safety & Compliance' },
+    { value: 'procurement', label: 'Materials & Procurement' },
+    { value: 'design', label: 'Design & Architecture' },
+    { value: 'other', label: 'Other' },
+  ],
+  professional: [
+    { value: 'client_management', label: 'Client Management' },
+    { value: 'project_delivery', label: 'Project Delivery' },
+    { value: 'billing', label: 'Billing & Invoicing' },
+    { value: 'knowledge_management', label: 'Knowledge Management' },
+    { value: 'compliance', label: 'Compliance & Quality' },
+    { value: 'business_development', label: 'Business Development' },
+    { value: 'other', label: 'Other' },
+  ],
+  nonprofit: [
+    { value: 'fundraising', label: 'Fundraising & Development' },
+    { value: 'program_management', label: 'Program Management' },
+    { value: 'volunteer', label: 'Volunteer Coordination' },
+    { value: 'grant_management', label: 'Grant Management' },
+    { value: 'donor_relations', label: 'Donor Relations' },
+    { value: 'community_outreach', label: 'Community Outreach' },
+    { value: 'other', label: 'Other' },
+  ],
+  automotive: [
+    { value: 'sales', label: 'Vehicle Sales' },
+    { value: 'service', label: 'Service & Repairs' },
+    { value: 'inventory', label: 'Inventory Management' },
+    { value: 'finance', label: 'Financing & Insurance' },
+    { value: 'customer_service', label: 'Customer Service' },
+    { value: 'marketing', label: 'Marketing & Promotions' },
+    { value: 'other', label: 'Other' },
+  ],
+  dental: [
+    { value: 'patient_care', label: 'Patient Care' },
+    { value: 'scheduling', label: 'Scheduling & Appointments' },
+    { value: 'billing', label: 'Billing & Insurance' },
+    { value: 'inventory', label: 'Inventory & Supplies' },
+    { value: 'patient_records', label: 'Patient Records' },
+    { value: 'compliance', label: 'Compliance & Regulations' },
+    { value: 'other', label: 'Other' },
+  ],
+  vocational: [
+    { value: 'curriculum', label: 'Curriculum & Training' },
+    { value: 'student_services', label: 'Student Services' },
+    { value: 'enrollment', label: 'Enrollment & Admissions' },
+    { value: 'job_placement', label: 'Job Placement' },
+    { value: 'compliance', label: 'Compliance & Accreditation' },
+    { value: 'facilities', label: 'Facilities & Equipment' },
+    { value: 'other', label: 'Other' },
+  ],
+  other: [
+    { value: 'finance', label: 'Finance & Accounting' },
+    { value: 'marketing', label: 'Marketing & Sales' },
+    { value: 'operations', label: 'Operations & Logistics' },
+    { value: 'hr', label: 'Human Resources' },
+    { value: 'customer', label: 'Customer Service' },
+    { value: 'product', label: 'Product Development' },
+    { value: 'it', label: 'IT & Technology' },
+    { value: 'legal', label: 'Legal & Compliance' },
+    { value: 'strategy', label: 'Strategy & Planning' },
+    { value: 'other', label: 'Other' },
+  ],
+};
+
+// Default operational area options for backward compatibility
 export const operationalAreaOptions = [
   { value: 'finance', label: 'Finance & Accounting' },
   { value: 'marketing', label: 'Marketing & Sales' },
